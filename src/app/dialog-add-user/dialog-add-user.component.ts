@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -13,6 +15,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
+import { MatNativeDateModule } from '@angular/material/core';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import { User } from '../../models/user.class';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
+
 
 
 @Component({
@@ -27,11 +36,41 @@ import {MatIconModule} from '@angular/material/icon';
     MatLabel,
     MatHint,
     MatDatepickerModule,
-    MatIconModule
-  ],
+    MatIconModule,
+    MatNativeDateModule,
+    FormsModule,
+    MatProgressBarModule,
+    CommonModule,
+    ],
+    providers: [provideNativeDateAdapter()],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
 })
 export class DialogAddUserComponent {
 
+  constructor(private firestore: Firestore, public dialogRef: MatDialogRef<DialogAddUserComponent>) { }
+
+
+  loading = false;
+  user = new User();
+  birthDate: Date | any;
+  
+
+  ngOnInit(): void {
+    
+  }
+
+
+  saveUser() {
+    this.user.birthdate = this.birthDate?.getTime();
+    console.log('Current user is', this.user);
+    this.loading = true;
+    const usersCollection = collection(this.firestore, 'users');
+    return addDoc(usersCollection, this.user.toJSON())
+    .then(result => {
+      this.loading = false;
+      console.log('Added user', result);
+      this.dialogRef.close();
+    });
+  }
 }
