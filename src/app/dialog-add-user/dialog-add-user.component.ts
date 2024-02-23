@@ -13,21 +13,22 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatIconModule} from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { User } from '../../models/user.class';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
 
 
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
-  imports: [MatDialogTitle,
+  imports: [
+    MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatButtonModule,
@@ -41,6 +42,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     FormsModule,
     MatProgressBarModule,
     CommonModule,
+    MatCardModule
     ],
     providers: [provideNativeDateAdapter()],
   templateUrl: './dialog-add-user.component.html',
